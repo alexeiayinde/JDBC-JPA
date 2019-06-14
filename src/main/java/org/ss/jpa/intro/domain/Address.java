@@ -1,20 +1,30 @@
 package org.ss.jpa.intro.domain;
 
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Set;
 
-public class Address {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+@Entity
+public class Address implements Serializable {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@Column(length = 512)
 	private String details;
+	@OneToMany(mappedBy = "address")
 	private Set<Contact> contacts;
 
 	public Address() {
-		this.contacts = new HashSet<Contact>();
 	}
 
 	public Address(String details) {
-		this.contacts = new HashSet<Contact>();
 		this.details = details;
 	}
 
@@ -42,10 +52,6 @@ public class Address {
 		this.contacts = contacts;
 	}
 
-	public void addContact(Contact c) {
-		contacts.add(c);
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -53,6 +59,8 @@ public class Address {
 		builder.append(id);
 		builder.append(", details=");
 		builder.append(details);
+		builder.append(", contacts=");
+		builder.append(contacts);
 		builder.append("]");
 		return builder.toString();
 	}
